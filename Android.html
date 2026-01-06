@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Android Battle Arena</title>
+    <style>
+        body { background:#0f0f0f; color:white; font-family:Arial; text-align:center; }
+        .arena { display:flex; justify-content:center; gap:40px; margin-top:20px; }
+        img { width:220px; border-radius:12px; border:3px solid #444; }
+        .card { width:300px; }
+        button { font-size:20px; padding:10px 25px; cursor:pointer; }
+        .stat { display:flex; justify-content:space-between; }
+    </style>
+</head>
+<body>
+
+<h1>🤖 Android Battle Arena</h1>
+<button onclick="battle()">⚔️ BATTLE</button>
+
+<h2 id="result"></h2>
+
+<div class="arena">
+    <div class="card">
+        <h2>YOU</h2>
+        <img id="pImg">
+        <div id="pStats"></div>
+        <h2 id="pScore"></h2>
+    </div>
+
+    <div class="card">
+        <h2>COMPUTER</h2>
+        <img id="cImg">
+        <div id="cStats"></div>
+        <h2 id="cScore"></h2>
+    </div>
+</div>
+
+<script>
+const STAT_NAMES = [
+    "Strength","Speed","Intelligence","Armor","Energy",
+    "Combat","Hacking","Defense","Agility","Luck"
+];
+
+// Create 12 androids
+const androids = [];
+for (let i = 1; i <= 12; i++) {
+    let stats = {};
+    STAT_NAMES.forEach(s => stats[s] = rand(1,100));
+
+    androids.push({
+        img: "android" + i + ".jpg",
+        stats: stats
+    });
+}
+
+function rand(min,max){ 
+    return Math.floor(Math.random()*(max-min+1))+min; 
+}
+
+function battle(){
+    const player = androids[rand(0,11)];
+    const cpu = androids[rand(0,11)];
+
+    document.getElementById("pImg").src = player.img;
+    document.getElementById("cImg").src = cpu.img;
+
+    let pHTML = "";
+    let cHTML = "";
+
+    let pScore = 0;
+    let cScore = 0;
+
+    STAT_NAMES.forEach(stat=>{
+        const p = player.stats[stat];
+        const c = cpu.stats[stat];
+
+        let pWin = p > c;
+        let cWin = c > p;
+
+        if(pWin) pScore += p;
+        if(cWin) cScore += c;
+
+        pHTML += `<div class="stat">${stat}: <b>${p}</b></div>`;
+        cHTML += `<div class="stat">${stat}: <b>${c}</b></div>`;
+    });
+
+    document.getElementById("pStats").innerHTML = pHTML;
+    document.getElementById("cStats").innerHTML = cHTML;
+
+    document.getElementById("pScore").innerText = "TOTAL: " + pScore;
+    document.getElementById("cScore").innerText = "TOTAL: " + cScore;
+
+    if(pScore > cScore)
+        document.getElementById("result").innerText = "🏆 YOU WIN!";
+    else if(pScore < cScore)
+        document.getElementById("result").innerText = "💀 COMPUTER WINS!";
+    else
+        document.getElementById("result").innerText = "🤝 DRAW!";
+}
+</script>
+
+</body>
+</html>
