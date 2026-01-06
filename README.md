@@ -1,0 +1,1 @@
+#Copy paste the .html code and save it as .html then on the same folder download and copy paste the 12 images of the Issues folder double click the .html file and play this cards game. Every android has a certain amount of points the android with most points win. It's some fun!
